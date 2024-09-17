@@ -1,0 +1,51 @@
+server:
+  port: 9081
+  servlet:
+    context-path: /eirs-pair
+spring:
+  datasource:
+    url: jdbc:mysql://64.227.146.191:3306/app
+    username: cdrp
+    password: Cdrp@1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+      show-sql: false
+
+jasypt:
+  encryptor:
+    password: eir
+    algorithm: PBEWithMD5AndDES
+    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+
+otp:
+  max-valid-check-count: 4
+
+notification:
+  url: http://159.223.159.153:9509/ceir/addNotifications
+
+http-response:
+  statuses:
+    HTTP_RESP_OLD_PAIR_NOT_FOUND_FAIL: Helo
+
+
+alerts:
+  postUrl: http://127.0.0.1:9504/eir/alert
+  processId: FileCreation
+  alerts-mapping:
+    DATABASE_EXCEPTION:
+      alertId: ALERT2020
+    DATABASE_TABLE_EXCEPTION:
+      alertId: ALERT2020
+    CONFIGURATION_VALUE_MISSING:
+      alertId: ALERT2020
+    CONFIGURATION_VALUE_WRONG:
+      alertId: ALERT2020
+    SMS_VALUE_MISSING:
+      alertId: ALERT2020
+    MODULE_EXECUTED_WITH_EXCEPTION:
+      alertId: ALERT2020
+    NOTIFICATION_SEND_EXCEPTION:
+      alertId: ALERT2020
