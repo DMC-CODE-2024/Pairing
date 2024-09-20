@@ -2,6 +2,7 @@ package com.eirs.pairs.alerts;
 
 import com.eirs.pairs.alerts.constants.AlertIds;
 import com.eirs.pairs.alerts.constants.AlertMessagePlaceholders;
+import com.eirs.pairs.config.AppConfig;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +35,14 @@ public class AlertServiceImpl implements AlertService {
     @Autowired
     AlertConfig alertConfig;
 
+    @Autowired
+    AppConfig appConfig;
+
     @PostConstruct
     public void init() {
-        if (alertConfig.getPostUrl() == null) {
-            log.info("Alert Service is not enabled");
+        if (alertConfig.getUrl() == null) {
+            log.error("Alert Service is not enabled configuration missing alerts.postUrl");
+            System.exit(0);
         } else {
             SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
             clientHttpRequestFactory.setConnectTimeout(1000);
@@ -56,7 +61,7 @@ public class AlertServiceImpl implements AlertService {
             log.error("Message not configured for AlertId:{}", alertIds);
         } else {
             String alertId = configDto.getAlertId();
-            putToQueue(AlertDto.builder().alertId(alertId).placeHolderMap(placeHolderMap).alertProcess(alertConfig.getProcessId()).build());
+            putToQueue(AlertDto.builder().alertId(alertId).placeHolderMap(placeHolderMap).alertProcess(appConfig.getModuleName()).build());
         }
     }
 
@@ -90,7 +95,7 @@ public class AlertServiceImpl implements AlertService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Map<String, String>> request = new HttpEntity<Map<String, String>>(mapper.toAlertRequest(alertDto), headers);
-            ResponseEntity<String> responseEntity = restTemplate.postForEntity(alertConfig.getPostUrl(), request, String.class);
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(alertConfig.getUrl(), request, String.class);
             log.info("Alert Sent Request:{}, TimeTaken:{} Response:{}", requestDto, responseEntity, (System.currentTimeMillis() - start));
         } catch (org.springframework.web.client.ResourceAccessException resourceAccessException) {
             log.error("Error while Sending Alert resourceAccessException:{} Request:{}", resourceAccessException.getMessage(), requestDto, resourceAccessException);

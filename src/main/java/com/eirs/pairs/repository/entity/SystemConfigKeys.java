@@ -5,9 +5,9 @@ public interface SystemConfigKeys {
     String valid_pairing_device_type = "valid_pairing_device_type";
 
     String default_language = "default_lang";
-    String notification_sms_start_time = "notification_sms_start_time";
+    String notification_sms_start_time = "pairing_notification_sms_start_time";
 
-    String notification_sms_end_time = "notification_sms_end_time";
+    String notification_sms_end_time = "pairing_notification_sms_end_time";
 
     String GRACE_PERIOD_END_DATE = "GRACE_PERIOD_END_DATE";
 

@@ -1,6 +1,7 @@
 
 package com.eirs.pairs.orchestrator;
 
+import com.eirs.pairs.config.AppConfig;
 import com.eirs.pairs.constants.*;
 import com.eirs.pairs.dto.NotificationDetailsDto;
 import com.eirs.pairs.dto.RecordDataDto;
@@ -46,6 +47,9 @@ public class PairingOrchestrator {
     InvalidImeiService invalidImeiService;
     @Autowired
     ModuleAlertService moduleAlertService;
+
+    @Autowired
+    AppConfig appConfig;
 
     @Transactional
     public void processForPairing(RecordDataDto recordDataDto) {
@@ -133,7 +137,7 @@ public class PairingOrchestrator {
         map.put(SmsPlaceHolders.ACTUAL_IMEI, recordDataDto.getActualImei());
         map.put(SmsPlaceHolders.IMSI, recordDataDto.getImsi());
         map.put(SmsPlaceHolders.MSISDN, recordDataDto.getMsisdn());
-        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(null).moduleName(ModuleNames.NOTIFICATION_AUTO_FEATURE).build();
+        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName()).build();
         notificationService.sendSmsInWindow(notificationDetailsDto);
     }
 }

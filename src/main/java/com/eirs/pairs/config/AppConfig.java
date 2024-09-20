@@ -1,7 +1,6 @@
 package com.eirs.pairs.config;
 
 import com.eirs.pairs.constants.DBType;
-import com.eirs.pairs.constants.PairMode;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +11,14 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class AppConfig {
 
-    @Value("${notification.url}")
+    @Value("${eirs.notification.url}")
     private String notificationUrl;
+
+    @Value("${module-name}")
+    private String moduleName;
+
+    @Value("${dependent.module-name}")
+    private String dependentModuleName;
 
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;

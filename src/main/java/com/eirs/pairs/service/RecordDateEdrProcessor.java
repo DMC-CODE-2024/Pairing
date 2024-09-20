@@ -56,8 +56,6 @@ public class RecordDateEdrProcessor {
     @Autowired
     ModuleAuditTrailService moduleAuditTrailService;
 
-    final String MODULE_NAME = ModuleNames.AUTO_PAIRING_MODULE_NAME;
-    final String DEPENDENT_MODULE_NAME = "DUPLICATE";
 
     @Autowired
     ModuleAlertService moduleAlertService;
@@ -75,17 +73,17 @@ public class RecordDateEdrProcessor {
     }
 
     public void processEdr(LocalDate localDate) {
-        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, DEPENDENT_MODULE_NAME)) {
-            log.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", MODULE_NAME, DEPENDENT_MODULE_NAME, localDate);
+        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, appConfig.getDependentModuleName())) {
+            log.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", appConfig.getModuleName(), appConfig.getDependentModuleName(), localDate);
             return;
         }
-        if (!moduleAuditTrailService.runProcess(localDate, MODULE_NAME)) {
-            log.info("Process:{} will not execute it may already Running or Completed for the day {}", MODULE_NAME, localDate);
+        if (!moduleAuditTrailService.runProcess(localDate, appConfig.getModuleName())) {
+            log.info("Process:{} will not execute it may already Running or Completed for the day {}", appConfig.getModuleName(), localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().moduleName(appConfig.getModuleName()).featureName(appConfig.getModuleName()).build());
         Long start = System.currentTimeMillis();
-        ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(MODULE_NAME).build();
+        ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(appConfig.getModuleName()).featureName(appConfig.getModuleName()).build();
         String query = "SELECT id,edr_date_time,actual_imei,imsi,msisdn,operator_name,file_name,is_gsma_valid,is_custom_paid,tac,device_type from app.edr_" + localDate.format(DateFormatterConstants.edrTableFormat) + " order by edr_date_time";
         log.info("JDBC TEmplate Selecting Records with Query:[{}]", query);
         try {
@@ -128,10 +126,10 @@ public class RecordDateEdrProcessor {
             updateModuleAuditTrail.setStatusCode(200);
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
             log.error("Error {}", e.getCause().getMessage(), e);
-            moduleAlertService.sendDatabaseAlert(e.getCause().getMessage(), MODULE_NAME);
+            moduleAlertService.sendDatabaseAlert(e.getCause().getMessage(), appConfig.getModuleName());
             updateModuleAuditTrail.setStatusCode(500);
         } catch (Exception e) {
-            moduleAlertService.sendModuleExecutionAlert(e.getMessage(), MODULE_NAME);
+            moduleAlertService.sendModuleExecutionAlert(e.getMessage(), appConfig.getModuleName());
             log.error("Error while Processing GracePeriod:{} Query:{} Error:{} ", isGracePeriodOn, query, e.getMessage(), e);
             updateModuleAuditTrail.setStatusCode(500);
         }

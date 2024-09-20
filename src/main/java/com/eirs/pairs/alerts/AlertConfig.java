@@ -9,12 +9,10 @@ import java.util.Map;
 
 @Configuration
 @Data
-@ConfigurationProperties(prefix = "alerts")
+@ConfigurationProperties(prefix = "eirs.alert")
 public class AlertConfig {
 
-    private String postUrl;
-
-    private String processId;
+    private String url;
 
     private Map<AlertIds, AlertConfigDto> alertsMapping;
 
