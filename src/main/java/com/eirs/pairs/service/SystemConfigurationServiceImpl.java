@@ -52,11 +52,6 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
     @PostConstruct
     public void init() {
-        //System.setProperty("module.name",appConfig.getModuleName());
-        /*Properties properties = new Properties();
-        properties.put("module.name",appConfig.getModuleName());
-        System.setProperties(properties);
-        log.info("System Properties {}",System.getProperty("module.name"));*/
         getAllowedDeviceTypes();
         getDefaultLanguage();
         getPairingAllowCount();
