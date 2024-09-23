@@ -2,7 +2,7 @@ package com.eirs.pairs.repository.entity;
 
 public interface SystemConfigKeys {
 
-    String valid_pairing_device_type = "valid_pairing_device_type";
+    String valid_pairing_device_type = "pairing_allowed_device_type";
 
     String default_language = "default_lang";
     String notification_sms_start_time = "pairing_notification_sms_start_time";
@@ -15,9 +15,9 @@ public interface SystemConfigKeys {
 
     String pairing_allowed_count = "pairing_allowed_count";
 
-    String msisdn_min_length = "msisdn_min_length";
+    String msisdn_min_length = "pairing_msisdn_min_length";
 
-    String msisdn_max_length = "msisdn_max_length";
+    String msisdn_max_length = "pairing_msisdn_max_length";
 
     String pairing_otp_max_valid_retries = "pairing_otp_max_valid_retries";
 
