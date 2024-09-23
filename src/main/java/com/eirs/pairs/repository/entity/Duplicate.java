@@ -44,7 +44,7 @@ public class Duplicate {
     @Column(name = "expiry_date")
     private LocalDateTime expiryDate;
 
-    @Column(name = "remarks")
+    @Column(name = "remark")
     private String remarks;
 
     @Column(name = "updated_by")
