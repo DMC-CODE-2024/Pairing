@@ -138,6 +138,10 @@ public class PairingOrchestrator {
         map.put(SmsPlaceHolders.IMSI, recordDataDto.getImsi());
         map.put(SmsPlaceHolders.MSISDN, recordDataDto.getMsisdn());
         NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName()).build();
-        notificationService.sendSmsInWindow(notificationDetailsDto);
+        try {
+            notificationService.sendSmsInWindow(notificationDetailsDto);
+        } catch (Exception e) {
+            log.error("Notification Sms not sent notificationDetailsDto:{}", notificationDetailsDto);
+        }
     }
 }
