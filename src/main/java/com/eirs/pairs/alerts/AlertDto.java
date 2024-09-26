@@ -18,7 +18,5 @@ public class AlertDto {
 
     private String alertProcess;
 
-
-
     private Map<AlertMessagePlaceholders, String> placeHolderMap;
 }
