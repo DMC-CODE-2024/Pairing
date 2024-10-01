@@ -102,12 +102,15 @@ public class RecordDateEdrProcessor {
                     recordDataDto.setIsCustomPaid(rs.getString("is_custom_paid") == null ? false : (rs.getInt("is_custom_paid") == 0 ? false : true));
                     recordDataDto.setDate(rs.getTimestamp("edr_date_time").toLocalDateTime());
                     recordDataDto.setTxnId(RandomIdGeneratorUtil.generateRequestId());
+                    log.info("Picked Record: {}", recordDataDto);
                     if (StringUtils.isAnyBlank(recordDataDto.getActualImei(), recordDataDto.getImsi(), recordDataDto.getOperatorName())) {
                         log.info("Not Processing as Actual Imei , Imsi or Operator Is Blank recordDataDto:{}", recordDataDto);
-                    } else if (recordDataDto.getActualImei().length() < 14) {
-                        recordDataDto.setImei(recordDataDto.getActualImei());
                     } else {
-                        recordDataDto.setImei(recordDataDto.getActualImei().substring(0, 14));
+                        if (recordDataDto.getActualImei().length() < 14) {
+                            recordDataDto.setImei(recordDataDto.getActualImei());
+                        } else {
+                            recordDataDto.setImei(recordDataDto.getActualImei().substring(0, 14));
+                        }
                         if (recordDataDto.getImsi().startsWith("456")) {
                             log.info("Processing recordDataDto:{}", recordDataDto);
                             if (isGracePeriodOn)

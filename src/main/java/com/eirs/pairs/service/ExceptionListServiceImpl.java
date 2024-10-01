@@ -35,25 +35,28 @@ public class ExceptionListServiceImpl implements ExceptionListService {
 
     @Override
     public ExceptionList save(ExceptionList exceptionList) {
+        long start = System.currentTimeMillis();
         log.info("Going to save in Exception List : {}", exceptionList);
         exceptionList = exceptionListRepository.save(exceptionList);
-        log.info("Saved in to ExceptionList:{}", exceptionList);
+        log.info("Saved in to ExceptionList:{} TimeTaken:{}", exceptionList, (System.currentTimeMillis() - start));
         return exceptionList;
     }
 
     @Override
     public ExceptionListHis save(ExceptionListHis exceptionListHis) {
+        long start = System.currentTimeMillis();
         log.info("Going to save in Exception List Hist: {}", exceptionListHis);
         exceptionListHis = exceptionListHisRepository.save(exceptionListHis);
-        log.info("Saved in to ExceptionListHis:{}", exceptionListHis);
+        log.info("Saved in to ExceptionListHis:{} TimeTaken:{}", exceptionListHis, (System.currentTimeMillis() - start));
         return exceptionListHis;
     }
 
     @Override
     public List<ExceptionList> getVIPImsi(String imsi) {
+        long start = System.currentTimeMillis();
         log.info("Going to find for VIP in exception list using imsi : {}", imsi);
         List<ExceptionList> exceptionLists = exceptionListRepository.findByImsiAndRequestType(imsi, ExceptionListConstants.VIP.name());
-        log.info("VIP in exception list using imsi : {}, is : {}", imsi, exceptionLists);
+        log.info("VIP in exception list using imsi : {}, is : {} TimeTaken:{}", imsi, exceptionLists, (System.currentTimeMillis() - start));
         return exceptionLists;
     }
 
@@ -75,6 +78,7 @@ public class ExceptionListServiceImpl implements ExceptionListService {
 
     @Override
     public void add(ValidateOtpRequestDto validateOtpRequestDto, String source) {
+        long start = System.currentTimeMillis();
         log.info("Adding In Exception List validateOtpRequestDto:{} ", validateOtpRequestDto);
         List<ExceptionList> exceptionLists = new ArrayList<>();
         List<ExceptionListHis> exceptionListHiss = new ArrayList<>();
@@ -103,9 +107,9 @@ public class ExceptionListServiceImpl implements ExceptionListService {
             exceptionListHiss.add(exceptionListHis);
         }
         exceptionListHisRepository.saveAll(exceptionListHiss);
-        log.info("Added in Exception History exceptionListHis:{} ", exceptionListHiss);
+        log.info("Added in Exception History TimeTaken:{} exceptionListHis:{} ", (System.currentTimeMillis() - start), exceptionListHiss);
         exceptionListRepository.saveAll(exceptionLists);
-        log.info("Added in Exception List exceptionList:{}", exceptionLists);
+        log.info("Added in Exception List TimeTaken:{} exceptionList:{}", (System.currentTimeMillis() - start), exceptionLists);
 
     }
 
@@ -139,6 +143,7 @@ public class ExceptionListServiceImpl implements ExceptionListService {
 
     @Override
     public void add(RecordDataDto fileDataDto, String source) {
+        long start = System.currentTimeMillis();
         ExceptionList exceptionList = new ExceptionList();
         exceptionList.setImei(fileDataDto.getActualImei().substring(0, 14));
         exceptionList.setActualImei(fileDataDto.getActualImei());
@@ -163,19 +168,21 @@ public class ExceptionListServiceImpl implements ExceptionListService {
         exceptionListHis.setOperatorName(fileDataDto.getOperatorName());
 
         exceptionListHis = exceptionListHisRepository.save(exceptionListHis);
-        log.info("Added to ExceptionListHis:{} fileDataDto:{}", exceptionListHis, fileDataDto);
+        log.info("Added to TimeTaken:{} ExceptionListHis:{} fileDataDto:{}", (System.currentTimeMillis() - start), exceptionListHis, fileDataDto);
         exceptionList = exceptionListRepository.save(exceptionList);
-        log.info("Added to ExceptionList:{} fileDataDto:{}", exceptionList, fileDataDto);
+        log.info("Added to TimeTaken:{} ExceptionList:{} fileDataDto:{}", (System.currentTimeMillis() - start), exceptionList, fileDataDto);
     }
 
     @Override
     public void delete(PairDto pairDto, String source, List<ExceptionList> exceptionLists) {
+        long start = System.currentTimeMillis();
         log.info("Deleting pairDto:{} from Exception List", pairDto);
         exceptionListRepository.deleteAll(exceptionLists);
-        log.info("Deleted pairDto:{} from Exception List {}", pairDto, exceptionLists);
+        log.info("Deleted TimeTaken:{} pairDto:{} from Exception List {}", (System.currentTimeMillis() - start), pairDto, exceptionLists);
         if (CollectionUtils.isEmpty(exceptionLists)) {
             return;
         }
+        start = System.currentTimeMillis();
         ExceptionList exceptionList = exceptionLists.get(0);
         ExceptionListHis exceptionListHis = new ExceptionListHis();
         exceptionListHis.setOperatorName(exceptionList.getOperatorName());
@@ -188,6 +195,6 @@ public class ExceptionListServiceImpl implements ExceptionListService {
         exceptionListHis.setTxnId(exceptionList.getTxnId());
         exceptionListHis.setSource(source);
         exceptionListHis = exceptionListHisRepository.save(exceptionListHis);
-        log.info("Added in Exception History exceptionListHis:{} ", exceptionListHis);
+        log.info("Added in Exception History TimeTaken:{} exceptionListHis:{} ", (System.currentTimeMillis() - start), exceptionListHis);
     }
 }

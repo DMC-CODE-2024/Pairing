@@ -42,16 +42,18 @@ public class DuplicateServiceImpl implements DuplicateService {
 
     @Override
     public Duplicate get(String imei, String imsi) {
+        long start = System.currentTimeMillis();
         log.info("Finding in duplicate table using imei : {} and imsi : {}", imei, imsi);
         Duplicate duplicate = duplicateRepository.findByImeiAndImsi(imei, imsi);
-        log.info("Get Duplicate for Imei:{} Imsi:{} Duplicate:{}", imei, imsi, duplicate);
+        log.info("Get Duplicate for Imei:{} Imsi:{} Duplicate:{} TimeTaken:{}", imei, imsi, duplicate, (System.currentTimeMillis() - start));
         return duplicate;
     }
 
     @Override
     public Duplicate save(Duplicate duplicate) {
+        long start = System.currentTimeMillis();
         duplicate = duplicateRepository.save(duplicate);
-        log.info("Saved to Duplicate:{}", duplicate);
+        log.info("Saved to Duplicate:{} TimeTaken:{}", duplicate, (System.currentTimeMillis() - start));
         return duplicate;
     }
 }

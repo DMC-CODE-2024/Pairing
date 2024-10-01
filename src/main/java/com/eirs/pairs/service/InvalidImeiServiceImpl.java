@@ -31,8 +31,8 @@ public class InvalidImeiServiceImpl implements InvalidImeiService {
     }
 
     public InvalidImei save(InvalidImei invalidImei) {
-        long start = System.currentTimeMillis();
         if (isNotPresent(invalidImei.getImei())) {
+            long start = System.currentTimeMillis();
             log.info("Going to save into invalidImei:{}", invalidImei);
             invalidImei = invalidImeiRepository.save(invalidImei);
             log.info("Saved into invalidImei:{} TimeTaken:{}", invalidImei, (System.currentTimeMillis() - start));

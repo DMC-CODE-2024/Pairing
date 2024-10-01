@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 @Data
@@ -30,6 +32,10 @@ public class AppConfig {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        SimpleClientHttpRequestFactory clientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+        clientHttpRequestFactory.setConnectTimeout(60_000);
+        clientHttpRequestFactory.setReadTimeout(60_000);
+        RestTemplate restTemplate = new RestTemplate(clientHttpRequestFactory);
+        return restTemplate;
     }
 }
