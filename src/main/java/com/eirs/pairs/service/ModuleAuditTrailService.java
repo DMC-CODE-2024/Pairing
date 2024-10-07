@@ -97,7 +97,8 @@ public class ModuleAuditTrailService {
         try {
             InetAddress localhost = InetAddress.getLocalHost();
             queryExecutorService.execute(AuditQueriesConstant.INSERT_MODULE_AUDIT_TRAIL.replaceAll(AuditQueriesConstant.PARAM_HOSTNAME, localhost.getHostName()).replaceAll(AuditQueriesConstant.MODULE_NAME, moduleAuditTrail.getModuleName())
-                    .replaceAll(AuditQueriesConstant.FEATURE_NAME, moduleAuditTrail.getFeatureName()));
+                    .replaceAll(AuditQueriesConstant.FEATURE_NAME, moduleAuditTrail.getFeatureName())
+                    .replaceAll(AuditQueriesConstant.PARAM_CREATED_ON, moduleAuditTrail.getCreatedOn().format(DateFormatterConstants.simpleDateFormat)));
         } catch (UnknownHostException ex) {
             log.info("Error to get Hostname moduleAuditTrail:{} Error:{}", moduleAuditTrail, ex.getMessage());
         }

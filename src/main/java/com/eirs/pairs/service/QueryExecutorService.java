@@ -20,7 +20,7 @@ public class QueryExecutorService {
     private AppConfig appConfig;
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public Integer execute(String query) {
+    public Integer executeCreate(String query) {
         long start = System.currentTimeMillis();
         try {
             log.info("DB[{}] Going to Execute Query:{}", appConfig.getDbType(), query);
@@ -33,5 +33,13 @@ public class QueryExecutorService {
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Integer execute(String query) {
+        long start = System.currentTimeMillis();
+        log.info("DB[{}] Going to Execute Query:{}", appConfig.getDbType(), query);
+        Integer result = jdbcTemplate.update(query);
+        log.info("DB[{}] Executed TimeTaken:{} Result:{} Query:{}", appConfig.getDbType(), (System.currentTimeMillis() - start), result, query);
+        return result;
+    }
 
 }
