@@ -86,7 +86,7 @@ public class RecordDateEdrProcessor {
                 Integer recordsInserted = stagingOrchestratorQuery.processForStaging(localDate);
                 counter.set(recordsInserted);
             } else {
-                String query = "SELECT id,edr_date_time,actual_imei,imsi,msisdn,operator_name,file_name,is_gsma_valid,is_custom_paid,tac,device_type from app.edr_" + localDate.format(DateFormatterConstants.edrTableFormat) + " order by edr_date_time";
+                String query = "SELECT id,edr_date_time,actual_imei,imsi,msisdn,operator_name,file_name,is_gsma_valid,is_custom_paid,tac,device_type from app.edr_" + localDate.format(DateFormatterConstants.edrTableFormat) + " where is_paired=0 order by edr_date_time";
                 log.info("JDBC TEmplate Selecting Records with Query:[{}]", query);
                 jdbcTemplate.setFetchSize(Integer.MIN_VALUE);
                 jdbcTemplate.query(query, new RowCallbackHandler() {

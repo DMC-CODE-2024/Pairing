@@ -30,10 +30,15 @@ public class BlackListServiceImpl implements BlackListService {
     private final String PAIRING = "PAIRING";
 
     public Blacklist save(Blacklist blacklist) {
-        long start = System.currentTimeMillis();
-        log.info("going to save in BlackList : {}", blacklist);
-        blacklist = blacklistRepository.save(blacklist);
-        log.info("Saved in to Blacklist:{} TimeTaken:{}", blacklist, (System.currentTimeMillis() - start));
+        try {
+
+            long start = System.currentTimeMillis();
+            log.info("going to save in BlackList : {}", blacklist);
+            blacklist = blacklistRepository.save(blacklist);
+            log.info("Saved in to Blacklist:{} TimeTaken:{}", blacklist, (System.currentTimeMillis() - start));
+        } catch (Exception e) {
+            log.error("Exception while adding to BlackList blacklist:{} Error:{}", blacklist, e.getMessage(), e);
+        }
         return blacklist;
     }
 
@@ -56,43 +61,51 @@ public class BlackListServiceImpl implements BlackListService {
     }
 
     public BlacklistHis save(BlacklistHis blacklistHis) {
-        long start = System.currentTimeMillis();
-        log.info("going to save in BlackListHis : {}", blacklistHis);
-        blacklistHis = blacklistHisRepository.save(blacklistHis);
-        log.info("Saved in to BlacklistHis:{} TimeTaken:{}", blacklistHis, (System.currentTimeMillis() - start));
+        try {
+            long start = System.currentTimeMillis();
+            log.info("going to save in BlackListHis : {}", blacklistHis);
+            blacklistHis = blacklistHisRepository.save(blacklistHis);
+            log.info("Saved in to BlacklistHis:{} TimeTaken:{}", blacklistHis, (System.currentTimeMillis() - start));
+        } catch (Exception e) {
+            log.error("Exception while adding to BlackListHis blacklistHis:{} Error:{}", blacklistHis, e.getMessage(), e);
+        }
         return blacklistHis;
     }
 
     @Override
     public void add(RecordDataDto fileDataDto) {
-        BlacklistHis blacklistHis = new BlacklistHis();
-        blacklistHis.setOperation(DeviceSyncOperation.ADD.ordinal());
-        blacklistHis.setImei(fileDataDto.getActualImei().substring(0, 14));
-        blacklistHis.setActualImei(fileDataDto.getActualImei());
+        try {
+            BlacklistHis blacklistHis = new BlacklistHis();
+            blacklistHis.setOperation(DeviceSyncOperation.ADD.ordinal());
+            blacklistHis.setImei(fileDataDto.getActualImei().substring(0, 14));
+            blacklistHis.setActualImei(fileDataDto.getActualImei());
 //        blacklistHis.setImsi(fileDataDto.getImsi());
-        blacklistHis.setCreatedOn(LocalDateTime.now());
-        blacklistHis.setMsisdn(null);
-        blacklistHis.setOperatorId(null);
-        blacklistHis.setOperatorName(null);
-        blacklistHis.setSource(PAIRING);
-        blacklistHis.setTac(fileDataDto.getActualImei().substring(0, 8));
+            blacklistHis.setCreatedOn(LocalDateTime.now());
+            blacklistHis.setMsisdn(null);
+            blacklistHis.setOperatorId(null);
+            blacklistHis.setOperatorName(null);
+            blacklistHis.setSource(PAIRING);
+            blacklistHis.setTac(fileDataDto.getActualImei().substring(0, 8));
 
-        Blacklist blacklist = new Blacklist();
-        blacklist.setImei(fileDataDto.getActualImei().substring(0, 14));
-        blacklist.setActualImei(fileDataDto.getActualImei());
+            Blacklist blacklist = new Blacklist();
+            blacklist.setImei(fileDataDto.getActualImei().substring(0, 14));
+            blacklist.setActualImei(fileDataDto.getActualImei());
 //        blacklist.setImsi(fileDataDto.getImsi());
-        blacklist.setCreatedOn(LocalDateTime.now());
-        blacklist.setMsisdn(null);
-        blacklist.setOperatorId(null);
-        blacklist.setOperatorName(null);
-        blacklist.setSource(PAIRING);
-        blacklist.setTac(fileDataDto.getActualImei().substring(0, 8));
+            blacklist.setCreatedOn(LocalDateTime.now());
+            blacklist.setMsisdn(null);
+            blacklist.setOperatorId(null);
+            blacklist.setOperatorName(null);
+            blacklist.setSource(PAIRING);
+            blacklist.setTac(fileDataDto.getActualImei().substring(0, 8));
 //      blacklist.setOperatorName(fileDataDto.getOperatorName());
 
-        blacklistHis = blacklistHisRepository.save(blacklistHis);
-        log.info("Added to BlackListHis:{} fileDataDto:{}", blacklistHis, fileDataDto);
-        blacklist = blacklistRepository.save(blacklist);
-        log.info("Added to BlackList:{} fileDataDto:{}", blacklist, fileDataDto);
+            blacklistHis = blacklistHisRepository.save(blacklistHis);
+            log.info("Added to BlackListHis:{} fileDataDto:{}", blacklistHis, fileDataDto);
+            blacklist = blacklistRepository.save(blacklist);
+            log.info("Added to BlackList:{} fileDataDto:{}", blacklist, fileDataDto);
+        } catch (Exception e) {
+            log.error("Exception while adding to BlackList fileDataDto:{} Error:{}", fileDataDto, e.getMessage(), e);
+        }
     }
 
     @Override

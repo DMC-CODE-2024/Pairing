@@ -51,23 +51,24 @@ public class PairingOrchestrator {
     @Autowired
     AppConfig appConfig;
 
-    @Transactional
     public void processForPairing(RecordDataDto recordDataDto) {
         try {
             if (!recordDataDto.getIsGsmaValid()) {
                 log.info("GSMA Invalid for recordDataDto:{}", recordDataDto);
+
                 pairingService.addPair(recordDataDto, GSMAStatus.INVALID, systemConfigurationService.getPairingAllowDays());
+                ////////////////We can check in Cache as expected 2 Million
                 invalidImeiService.save(new InvalidImei(null, recordDataDto.getActualImei(), recordDataDto.getImei()));
                 sendNotification(recordDataDto, SmsTag.AutoPairGsmaInvalidSMS);
                 return;
             }
 
-            if (invalidImeiService.isPresent(recordDataDto.getImei())) {
+            /*if (invalidImeiService.isPresent(recordDataDto.getImei())) {
                 log.info("Invalid Imei for recordDataDto:{}", recordDataDto);
                 pairingService.addPair(recordDataDto, GSMAStatus.VALID, systemConfigurationService.getPairingAllowDays());
                 sendNotification(recordDataDto, SmsTag.AutoPairGsmaValidSMS);
                 return;
-            }
+            }*/
 
             if (!isAllowedDeviceType(recordDataDto)) {
                 log.info("Not Processing record as Device Type is not Allowed from Configuration {}", recordDataDto);
@@ -79,6 +80,7 @@ public class PairingOrchestrator {
                 return;
             }
 
+            // Is Locking Required and Pairing is also happen from Manual
             List<Pairing> pairings = pairingService.getPairsByImei(recordDataDto.getImei());
             Optional<Pairing> pairWithImsiOptional = pairings.stream().filter(pair ->
                     StringUtils.equals(pair.getImsi(), recordDataDto.getImsi())).findFirst();

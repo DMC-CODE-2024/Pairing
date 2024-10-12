@@ -155,6 +155,8 @@ public class PairingServiceImpl implements PairingService {
     @Override
     public void addPair(RecordDataDto recordDataDto, GSMAStatus gsmaStatus, int allowedDays) {
         List<Pairing> pairings = getPairsByImei(recordDataDto.getImei());
+
+        ////////////// Invalid Imei pair always from Auto Pair
         Optional<Pairing> pairOptional = pairings.stream().filter(pair -> StringUtils.equals(pair.getImsi(), recordDataDto.getImsi())).findFirst();
         if (pairOptional.isPresent()) {
             log.info("Already Paired with Imei PairMode:PAIRING recordDataDto:{}", recordDataDto);

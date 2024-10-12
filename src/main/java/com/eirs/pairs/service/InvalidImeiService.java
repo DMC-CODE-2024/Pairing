@@ -8,6 +8,8 @@ public interface InvalidImeiService {
 
     Boolean isPresent(String imei);
 
+    Boolean isPresentFromCache(String imei);
+
     Boolean isNotPresent(String imei);
 
     InvalidImei save(InvalidImei invalidImei);

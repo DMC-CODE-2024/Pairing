@@ -51,9 +51,13 @@ public class DuplicateServiceImpl implements DuplicateService {
 
     @Override
     public Duplicate save(Duplicate duplicate) {
-        long start = System.currentTimeMillis();
-        duplicate = duplicateRepository.save(duplicate);
-        log.info("Saved to Duplicate:{} TimeTaken:{}", duplicate, (System.currentTimeMillis() - start));
+        try {
+            long start = System.currentTimeMillis();
+            duplicate = duplicateRepository.save(duplicate);
+            log.info("Saved to Duplicate:{} TimeTaken:{}", duplicate, (System.currentTimeMillis() - start));
+        } catch (Exception e) {
+            log.error("Exception while saving to Duplicate:{} Error:{}", duplicate, e.getMessage(), e);
+        }
         return duplicate;
     }
 }
