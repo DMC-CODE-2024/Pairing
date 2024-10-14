@@ -2,24 +2,21 @@
 package com.eirs.pairs.orchestrator;
 
 import com.eirs.pairs.config.AppConfig;
-import com.eirs.pairs.constants.*;
+import com.eirs.pairs.constants.GSMAStatus;
+import com.eirs.pairs.constants.PairMode;
+import com.eirs.pairs.constants.SmsPlaceHolders;
+import com.eirs.pairs.constants.SmsTag;
 import com.eirs.pairs.dto.NotificationDetailsDto;
 import com.eirs.pairs.dto.RecordDataDto;
-import com.eirs.pairs.exception.InternalServerException;
-import com.eirs.pairs.repository.MdrRepository;
-import com.eirs.pairs.repository.entity.*;
+import com.eirs.pairs.repository.entity.InvalidImei;
+import com.eirs.pairs.repository.entity.Pairing;
 import com.eirs.pairs.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -139,7 +136,7 @@ public class PairingOrchestrator {
         map.put(SmsPlaceHolders.ACTUAL_IMEI, recordDataDto.getActualImei());
         map.put(SmsPlaceHolders.IMSI, recordDataDto.getImsi());
         map.put(SmsPlaceHolders.MSISDN, recordDataDto.getMsisdn());
-        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(null).moduleName(appConfig.getModuleName()).build();
+        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
         try {
             notificationService.sendSmsInWindow(notificationDetailsDto);
         } catch (Exception e) {

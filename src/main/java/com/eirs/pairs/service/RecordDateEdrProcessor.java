@@ -53,9 +53,12 @@ public class RecordDateEdrProcessor {
     @Autowired
     ModuleAuditTrailService moduleAuditTrailService;
 
-
     @Autowired
     ModuleAlertService moduleAlertService;
+
+    @Autowired
+    InvalidImeiServiceImpl invalidImeiService;
+    final String MODULE_NAME = "auto_pairing";
 
     @PostConstruct
     public void init() {
@@ -70,22 +73,23 @@ public class RecordDateEdrProcessor {
     }
 
     public void processEdr(LocalDate localDate) {
-        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, appConfig.getDependentModuleName())) {
-            log.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", appConfig.getModuleName(), appConfig.getDependentModuleName(), localDate);
+        if (!moduleAuditTrailService.previousDependentModuleExecuted(localDate, appConfig.getDependentFeatureName())) {
+            log.info("Process:{} will not execute as already Dependent Module:{} Not Executed for the day {}", appConfig.getFeatureName(), appConfig.getDependentFeatureName(), localDate);
             return;
         }
-        if (!moduleAuditTrailService.runProcess(localDate, appConfig.getModuleName())) {
-            log.info("Process:{} will not execute it may already Running or Completed for the day {}", appConfig.getModuleName(), localDate);
+        if (!moduleAuditTrailService.runProcess(localDate, appConfig.getFeatureName())) {
+            log.info("Process:{} will not execute it may already Running or Completed for the day {}", appConfig.getFeatureName(), localDate);
             return;
         }
-        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(appConfig.getModuleName()).featureName(appConfig.getModuleName()).build());
+        moduleAuditTrailService.createAudit(ModuleAuditTrail.builder().createdOn(LocalDateTime.of(localDate, LocalTime.now())).moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build());
         Long start = System.currentTimeMillis();
-        ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(appConfig.getModuleName()).featureName(appConfig.getModuleName()).build();
+        ModuleAuditTrail updateModuleAuditTrail = ModuleAuditTrail.builder().moduleName(MODULE_NAME).featureName(appConfig.getFeatureName()).build();
         try {
             if (isGracePeriodOn) {
                 Integer recordsInserted = stagingOrchestratorQuery.processForStaging(localDate);
                 counter.set(recordsInserted);
             } else {
+                invalidImeiService.loadToCache();
                 String query = "SELECT id,edr_date_time,actual_imei,imsi,msisdn,operator_name,file_name,is_gsma_valid,is_custom_paid,tac,device_type from app.edr_" + localDate.format(DateFormatterConstants.edrTableFormat) + " where is_paired=0 order by edr_date_time";
                 log.info("JDBC TEmplate Selecting Records with Query:[{}]", query);
                 jdbcTemplate.setFetchSize(Integer.MIN_VALUE);
@@ -131,10 +135,10 @@ public class RecordDateEdrProcessor {
             updateModuleAuditTrail.setStatusCode(200);
         } catch (org.springframework.dao.InvalidDataAccessResourceUsageException e) {
             log.error("Error {}", e.getCause().getMessage(), e);
-            moduleAlertService.sendDatabaseAlert(e.getCause().getMessage(), appConfig.getModuleName());
+            moduleAlertService.sendDatabaseAlert(e.getCause().getMessage(), appConfig.getFeatureName());
             updateModuleAuditTrail.setStatusCode(500);
         } catch (Exception e) {
-            moduleAlertService.sendModuleExecutionAlert(e.getMessage(), appConfig.getModuleName());
+            moduleAlertService.sendModuleExecutionAlert(e.getMessage(), appConfig.getFeatureName());
             log.error("Error while Processing GracePeriod:{} Error:{} ", isGracePeriodOn, e.getMessage(), e);
             updateModuleAuditTrail.setStatusCode(500);
         }

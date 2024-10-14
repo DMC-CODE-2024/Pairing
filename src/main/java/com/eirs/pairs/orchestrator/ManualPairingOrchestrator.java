@@ -577,13 +577,13 @@ public class ManualPairingOrchestrator {
         smsPlaceHolder.put(SmsPlaceHolders.PAIR, msg);
         smsPlaceHolder.put(SmsPlaceHolders.OTP, String.valueOf(validateOtpRequestDto.getOtp()));
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(validateOtpRequestDto.getContactNumber()).smsTag(SmsTag.ManualPairOtpSMS).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getModuleName()).requestId(validateOtpRequestDto.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(validateOtpRequestDto.getContactNumber()).smsTag(SmsTag.ManualPairOtpSMS).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(validateOtpRequestDto.getRequestId()).build();
             notificationService.sendOtpSms(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Sms not sent validateOtpRequestDto:{}", validateOtpRequestDto);
         }
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(validateOtpRequestDto.getEmailId()).smsTag(SmsTag.ManualPairOtpEmail).subjectSmsTag(SmsTag.ManualPairOtpSubject).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getModuleName()).requestId(validateOtpRequestDto.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(validateOtpRequestDto.getEmailId()).smsTag(SmsTag.ManualPairOtpEmail).subjectSmsTag(SmsTag.ManualPairOtpSubject).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(validateOtpRequestDto.getRequestId()).build();
             notificationService.sendOtpEmail(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Email not sent validateOtpRequestDto:{}", validateOtpRequestDto);
@@ -599,12 +599,12 @@ public class ManualPairingOrchestrator {
         smsPlaceHolder.put(SmsPlaceHolders.REFERENCE_ID, validateOtpRequestDto.getRequestId());
         smsPlaceHolder.put(SmsPlaceHolders.PAIR, msg);
         try {
-            notificationService.sendSms(NotificationDetailsDto.builder().msisdn(validateOtpRequestDto.getContactNumber()).smsTag(SmsTag.ManualPairSMS).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).requestId(validateOtpRequestDto.getRequestId()).moduleName(appConfig.getModuleName()).build());
+            notificationService.sendSms(NotificationDetailsDto.builder().msisdn(validateOtpRequestDto.getContactNumber()).smsTag(SmsTag.ManualPairSMS).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).requestId(validateOtpRequestDto.getRequestId()).moduleName(appConfig.getFeatureName()).build());
         } catch (Exception e) {
             log.error("Notification Sms not sent validateOtpRequestDto:{}", validateOtpRequestDto);
         }
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(validateOtpRequestDto.getEmailId()).smsTag(SmsTag.ManualPairEmail).subjectSmsTag(SmsTag.ManualPairSubject).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getModuleName()).requestId(validateOtpRequestDto.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(validateOtpRequestDto.getEmailId()).smsTag(SmsTag.ManualPairEmail).subjectSmsTag(SmsTag.ManualPairSubject).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(validateOtpRequestDto.getRequestId()).build();
             notificationService.sendEmail(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Email not sent validateOtpRequestDto:{}", validateOtpRequestDto);
@@ -620,12 +620,12 @@ public class ManualPairingOrchestrator {
         smsPlaceHolder.put(SmsPlaceHolders.REFERENCE_ID, validateOtpRequestDto.getRequestId());
         smsPlaceHolder.put(SmsPlaceHolders.PAIR, msg);
         try {
-            notificationService.sendSms(NotificationDetailsDto.builder().msisdn(validateOtpRequestDto.getContactNumber()).smsTag(SmsTag.ManualPairFailedSMS).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).requestId(validateOtpRequestDto.getRequestId()).moduleName(appConfig.getModuleName()).build());
+            notificationService.sendSms(NotificationDetailsDto.builder().msisdn(validateOtpRequestDto.getContactNumber()).smsTag(SmsTag.ManualPairFailedSMS).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).requestId(validateOtpRequestDto.getRequestId()).moduleName(appConfig.getFeatureName()).build());
         } catch (Exception e) {
             log.error("Notification Sms not sent validateOtpRequestDto:{}", validateOtpRequestDto);
         }
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(validateOtpRequestDto.getEmailId()).smsTag(SmsTag.ManualPairFailedEmail).subjectSmsTag(SmsTag.ManualPairSubject).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getModuleName()).requestId(validateOtpRequestDto.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(validateOtpRequestDto.getEmailId()).smsTag(SmsTag.ManualPairFailedEmail).subjectSmsTag(SmsTag.ManualPairSubject).smsPlaceHolder(smsPlaceHolder).language(validateOtpRequestDto.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(validateOtpRequestDto.getRequestId()).build();
             notificationService.sendEmail(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Email not sent validateOtpRequestDto:{}", validateOtpRequestDto);
@@ -643,14 +643,14 @@ public class ManualPairingOrchestrator {
         String msg = imeiManualPairMgmt.getImei1() + " is paired with " + imeiManualPairMgmt.getMsisdn1();
         placeHolder.put(SmsPlaceHolders.PAIR, msg);
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(imeiManualPairMgmt.getContactNumber()).smsTag(SmsTag.ManualPairRepairSMS).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getModuleName()).requestId(imeiManualPairMgmt.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(imeiManualPairMgmt.getContactNumber()).smsTag(SmsTag.ManualPairRepairSMS).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(imeiManualPairMgmt.getRequestId()).build();
             notificationService.sendSms(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Sms not sent imeiManualPairMgmt:{}", imeiManualPairMgmt);
         }
         log.info("Sending Notification smsTag:{} on Email :{}", SmsTag.ManualPairRepairEmail, imeiManualPairMgmt);
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(imeiManualPairMgmt.getEmailId()).smsTag(SmsTag.ManualPairRepairEmail).subjectSmsTag(SmsTag.ManualPairRepairSubject).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getModuleName()).requestId(imeiManualPairMgmt.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(imeiManualPairMgmt.getEmailId()).smsTag(SmsTag.ManualPairRepairEmail).subjectSmsTag(SmsTag.ManualPairRepairSubject).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(imeiManualPairMgmt.getRequestId()).build();
             notificationService.sendEmail(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Email not sent imeiManualPairMgmt:{}", imeiManualPairMgmt);
@@ -668,14 +668,14 @@ public class ManualPairingOrchestrator {
         String msg = imeiManualPairMgmt.getImei1() + " is not paired with " + imeiManualPairMgmt.getMsisdn1();
         placeHolder.put(SmsPlaceHolders.PAIR, msg);
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(imeiManualPairMgmt.getContactNumber()).smsTag(SmsTag.ManualPairRepairFailedSMS).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getModuleName()).requestId(imeiManualPairMgmt.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(imeiManualPairMgmt.getContactNumber()).smsTag(SmsTag.ManualPairRepairFailedSMS).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(imeiManualPairMgmt.getRequestId()).build();
             notificationService.sendSms(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Sms not sent imeiManualPairMgmt:{}", imeiManualPairMgmt);
         }
         log.info("Sending Notification smsTag:{} on Email :{}", SmsTag.ManualPairRepairEmail, imeiManualPairMgmt);
         try {
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(imeiManualPairMgmt.getEmailId()).smsTag(SmsTag.ManualPairRepairFailedEmail).subjectSmsTag(SmsTag.ManualPairRepairSubject).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getModuleName()).requestId(imeiManualPairMgmt.getRequestId()).build();
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().emailId(imeiManualPairMgmt.getEmailId()).smsTag(SmsTag.ManualPairRepairFailedEmail).subjectSmsTag(SmsTag.ManualPairRepairSubject).smsPlaceHolder(placeHolder).language(imeiManualPairMgmt.getLanguage()).moduleName(appConfig.getFeatureName()).requestId(imeiManualPairMgmt.getRequestId()).build();
             notificationService.sendEmail(notificationDetailsDto);
         } catch (Exception e) {
             log.error("Notification Email not sent imeiManualPairMgmt:{}", imeiManualPairMgmt);

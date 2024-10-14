@@ -16,11 +16,11 @@ public class AppConfig {
     @Value("${eirs.notification.url}")
     private String notificationUrl;
 
-    @Value("${module-name}")
-    private String moduleName;
+    @Value("${feature-name}")
+    private String featureName;
 
-    @Value("${dependent.module-name}")
-    private String dependentModuleName;
+    @Value("${dependent.feature-name}")
+    private String dependentFeatureName;
 
     @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;

@@ -28,7 +28,6 @@ public class Application {
         } else {
             LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             log.info("Auto Pairing Mode Processing for date:{}", date);
-            context.getBean(InvalidImeiServiceImpl.class).loadToCache();
             context.getBean(RecordDateEdrProcessor.class).processEdr(date);
             System.exit(0);
         }
