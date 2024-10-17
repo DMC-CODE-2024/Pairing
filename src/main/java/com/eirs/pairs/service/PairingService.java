@@ -1,7 +1,6 @@
 package com.eirs.pairs.service;
 
 import com.eirs.pairs.constants.GSMAStatus;
-import com.eirs.pairs.constants.PairMode;
 import com.eirs.pairs.dto.RecordDataDto;
 import com.eirs.pairs.repository.entity.Pairing;
 

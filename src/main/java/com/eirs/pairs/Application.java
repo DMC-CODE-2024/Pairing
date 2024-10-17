@@ -23,14 +23,11 @@ public class Application {
     public static void main(String[] args) {
 
         ApplicationContext context = SpringApplication.run(Application.class, args);
-        if (args == null || args.length == 0) {
-            log.info("Up as Manual Pairing Mode");
-        } else {
-            LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            log.info("Auto Pairing Mode Processing for date:{}", date);
-            context.getBean(RecordDateEdrProcessor.class).processEdr(date);
-            System.exit(0);
-        }
+//        LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate date = LocalDate.of(2024,9,05);
+        log.info("Auto Pairing Mode Processing for date:{}", date);
+        context.getBean(RecordDateEdrProcessor.class).processEdr(date);
+        System.exit(0);
     }
 
 }

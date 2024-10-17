@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class InvalidImeiServiceImpl implements InvalidImeiService {
@@ -21,12 +19,12 @@ public class InvalidImeiServiceImpl implements InvalidImeiService {
     @Autowired
     InvalidImeiRepository invalidImeiRepository;
 
-    private Map<String, Boolean> cache = new HashMap<>();
+    private Set<String> cache = new HashSet<>();
 
     public void loadToCache() {
         log.info("Started Loading Invalid Imei Data to cache");
         try {
-            invalidImeiRepository.findAll().stream().parallel().forEach(invalidImei -> cache.put(invalidImei.getImei(), Boolean.TRUE));
+            cache.addAll(invalidImeiRepository.findAllImei());
         } catch (Exception e) {
             log.error("Error While loading Invalid Imei data to Cache {}", e.getMessage(), e);
         }
@@ -43,7 +41,7 @@ public class InvalidImeiServiceImpl implements InvalidImeiService {
 
     @Override
     public Boolean isPresentFromCache(String imei) {
-        return BooleanUtils.isTrue(cache.get(imei));
+        return cache.contains(imei);
     }
 
     @Override
@@ -56,7 +54,7 @@ public class InvalidImeiServiceImpl implements InvalidImeiService {
             long start = System.currentTimeMillis();
             log.info("Going to save into invalidImei:{}", invalidImei);
             invalidImei = invalidImeiRepository.save(invalidImei);
-            cache.put(invalidImei.getImei(), Boolean.TRUE);
+            cache.add(invalidImei.getImei());
             log.info("Saved into invalidImei:{} TimeTaken:{}", invalidImei, (System.currentTimeMillis() - start));
         }
         return invalidImei;

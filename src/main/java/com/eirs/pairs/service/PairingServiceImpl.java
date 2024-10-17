@@ -1,10 +1,8 @@
 package com.eirs.pairs.service;
 
 import com.eirs.pairs.constants.*;
-import com.eirs.pairs.dto.NotificationDetailsDto;
 import com.eirs.pairs.dto.RecordDataDto;
 import com.eirs.pairs.repository.PairingRepository;
-import com.eirs.pairs.repository.entity.InvalidImei;
 import com.eirs.pairs.repository.entity.Pairing;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j

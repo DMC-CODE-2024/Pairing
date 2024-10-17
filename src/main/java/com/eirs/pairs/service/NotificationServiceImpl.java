@@ -1,9 +1,6 @@
 package com.eirs.pairs.service;
 
 import com.eirs.pairs.constants.NotificationChannelType;
-import com.eirs.pairs.constants.NotificationLanguage;
-import com.eirs.pairs.constants.SmsPlaceHolders;
-import com.eirs.pairs.constants.SmsTag;
 import com.eirs.pairs.dto.NotificationDetailsDto;
 import com.eirs.pairs.dto.SmsDto;
 import com.eirs.pairs.exception.NotificationException;
@@ -20,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

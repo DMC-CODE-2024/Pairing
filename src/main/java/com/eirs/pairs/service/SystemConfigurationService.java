@@ -23,10 +23,5 @@ public interface SystemConfigurationService {
 
     Integer getPairingAllowCount();
 
-    Integer getMsisdnMinLength();
-
-    Integer getMsisdnMaxLength();
-
-    Integer getMaxOtpValidRetries();
 
 }
