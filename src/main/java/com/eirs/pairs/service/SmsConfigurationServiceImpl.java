@@ -33,7 +33,7 @@ public class SmsConfigurationServiceImpl implements SmsConfigurationService {
         try {
             if (language == null)
                 language = systemConfigurationService.getDefaultLanguage();
-            SmsConfigurationEntity smsConfiguration = smsConfigurationEntityRepository.findByTagAndLanguageAndModule(tag, language, moduleName);
+            SmsConfigurationEntity smsConfiguration = smsConfigurationEntityRepository.findByTagAndLanguage(tag, language);
             if (smsConfiguration == null) {
                 retVal = new SmsDto();
                 retVal.setMsg(tag.getDescription());
