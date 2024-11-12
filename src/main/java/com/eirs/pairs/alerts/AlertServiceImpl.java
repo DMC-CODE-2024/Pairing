@@ -103,4 +103,19 @@ public class AlertServiceImpl implements AlertService {
             log.error("Error while Sending Alert Error:{} Request:{}", e.getMessage(), requestDto, e);
         }
     }
+
+    public void emptyAlertQueue() {
+        log.info("Send All Alerts if queued up");
+        while (true) {
+            try {
+                AlertDto alertDto = queue.poll();
+                if (alertDto == null)
+                    break;
+                log.info("Alert taken from Queue Request:{} QueueSize:{}", alertDto, queue.size());
+                callAlertUrl(alertDto);
+            } catch (Exception e) {
+                log.error("Error while Taking Request from Queue Error:{} ", e.getMessage(), e);
+            }
+        }
+    }
 }

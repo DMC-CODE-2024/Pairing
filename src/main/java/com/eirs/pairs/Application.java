@@ -1,5 +1,6 @@
 package com.eirs.pairs;
 
+import com.eirs.pairs.alerts.AlertServiceImpl;
 import com.eirs.pairs.service.InvalidImeiServiceImpl;
 import com.eirs.pairs.service.RecordDateEdrProcessor;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
@@ -26,6 +27,7 @@ public class Application {
         LocalDate date = LocalDate.parse(args[0], DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         log.info("Auto Pairing Mode Processing for date:{}", date);
         context.getBean(RecordDateEdrProcessor.class).processEdr(date);
+        context.getBean(AlertServiceImpl.class).emptyAlertQueue();
         System.exit(0);
     }
 
