@@ -93,12 +93,12 @@ public class PairingOrchestrator {
                 }
             } else if (pairWithNullImsiOptional.isPresent()) {
                 log.info("Already Paired with Imei and and Imsi is null PairMode:PAIRING FileData:{}", recordDataDto);
-                pairWithImsiOptional.get().setRecordTime(recordDataDto.getDate());
-                if (StringUtils.isBlank(pairWithImsiOptional.get().getImsi())) {
-                    pairWithImsiOptional.get().setImsi(recordDataDto.getImsi());
+                pairWithNullImsiOptional.get().setRecordTime(recordDataDto.getDate());
+                if (StringUtils.isBlank(pairWithNullImsiOptional.get().getImsi())) {
+                    pairWithNullImsiOptional.get().setImsi(recordDataDto.getImsi());
                 }
-                pairingService.save(pairWithImsiOptional.get());
-                log.info("Updated EdrDateTime and Imsi for pair:{}", pairWithImsiOptional.get());
+                pairingService.save(pairWithNullImsiOptional.get());
+                log.info("Updated EdrDateTime and Imsi for pair:{}", pairWithNullImsiOptional.get());
                 exceptionListService.add(recordDataDto, PairMode.AUTO.name());
             } else {
                 if (pairings.size() < systemConfigurationService.getPairingAllowCount().intValue()) {
