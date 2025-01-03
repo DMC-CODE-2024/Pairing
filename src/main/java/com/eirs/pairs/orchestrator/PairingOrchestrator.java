@@ -79,8 +79,7 @@ public class PairingOrchestrator {
 
             // Is Locking Required and Pairing is also happen from Manual
             List<Pairing> pairings = pairingService.getPairsByImei(recordDataDto.getImei());
-            Optional<Pairing> pairWithImsiOptional = pairings.stream().filter(pair ->
-                    StringUtils.equals(pair.getImsi(), recordDataDto.getImsi())).findFirst();
+            Optional<Pairing> pairWithImsiOptional = pairings.stream().filter(pair -> StringUtils.equals(pair.getImsi(), recordDataDto.getImsi())).findFirst();
             Optional<Pairing> pairWithNullImsiOptional = pairings.stream().filter(pair -> StringUtils.isBlank(pair.getImsi()) && StringUtils.equals(pair.getMsisdn(), recordDataDto.getMsisdn())).findFirst();
             if (pairWithImsiOptional.isPresent()) {
                 log.info("Already Paired with Imei and Imsi PairMode:PAIRING FileData:{}", recordDataDto);
@@ -132,15 +131,19 @@ public class PairingOrchestrator {
     }
 
     private void sendNotification(RecordDataDto recordDataDto, SmsTag smsTag) {
-        Map<SmsPlaceHolders, String> map = new HashMap<>();
-        map.put(SmsPlaceHolders.ACTUAL_IMEI, recordDataDto.getActualImei());
-        map.put(SmsPlaceHolders.IMSI, recordDataDto.getImsi());
-        map.put(SmsPlaceHolders.MSISDN, recordDataDto.getMsisdn());
-        NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
-        try {
-            notificationService.sendSmsInWindow(notificationDetailsDto);
-        } catch (Exception e) {
-            log.error("Notification Sms not sent notificationDetailsDto:{}", notificationDetailsDto);
+        if (StringUtils.isBlank(recordDataDto.getMsisdn())) {
+            log.info("Not Sending Notification as Msisdn missing {}", recordDataDto);
+        } else {
+            Map<SmsPlaceHolders, String> map = new HashMap<>();
+            map.put(SmsPlaceHolders.ACTUAL_IMEI, recordDataDto.getActualImei());
+            map.put(SmsPlaceHolders.IMSI, recordDataDto.getImsi());
+            map.put(SmsPlaceHolders.MSISDN, recordDataDto.getMsisdn());
+            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
+            try {
+                notificationService.sendSmsInWindow(notificationDetailsDto);
+            } catch (Exception e) {
+                log.error("Notification Sms not sent notificationDetailsDto:{}", notificationDetailsDto);
+            }
         }
     }
 }
