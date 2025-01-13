@@ -131,18 +131,20 @@ public class PairingOrchestrator {
     }
 
     private void sendNotification(RecordDataDto recordDataDto, SmsTag smsTag) {
-        if (StringUtils.isBlank(recordDataDto.getMsisdn())) {
-            log.info("Not Sending Notification as Msisdn missing {}", recordDataDto);
-        } else {
-            Map<SmsPlaceHolders, String> map = new HashMap<>();
-            map.put(SmsPlaceHolders.ACTUAL_IMEI, recordDataDto.getActualImei());
-            map.put(SmsPlaceHolders.IMSI, recordDataDto.getImsi());
-            map.put(SmsPlaceHolders.MSISDN, recordDataDto.getMsisdn());
-            NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
-            try {
-                notificationService.sendSmsInWindow(notificationDetailsDto);
-            } catch (Exception e) {
-                log.error("Notification Sms not sent notificationDetailsDto:{}", notificationDetailsDto);
+        if (systemConfigurationService.sendPairingNotificationFlag()) {
+            if (StringUtils.isBlank(recordDataDto.getMsisdn())) {
+                log.info("Not Sending Notification as Msisdn missing {}", recordDataDto);
+            } else {
+                Map<SmsPlaceHolders, String> map = new HashMap<>();
+                map.put(SmsPlaceHolders.ACTUAL_IMEI, recordDataDto.getActualImei());
+                map.put(SmsPlaceHolders.IMSI, recordDataDto.getImsi());
+                map.put(SmsPlaceHolders.MSISDN, recordDataDto.getMsisdn());
+                NotificationDetailsDto notificationDetailsDto = NotificationDetailsDto.builder().msisdn(recordDataDto.getMsisdn()).smsTag(smsTag).smsPlaceHolder(map).language(systemConfigurationService.getDefaultLanguage()).moduleName(appConfig.getFeatureName()).build();
+                try {
+                    notificationService.sendSmsInWindow(notificationDetailsDto);
+                } catch (Exception e) {
+                    log.error("Notification Sms not sent notificationDetailsDto:{}", notificationDetailsDto);
+                }
             }
         }
     }

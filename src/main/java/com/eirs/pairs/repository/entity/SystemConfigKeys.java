@@ -15,10 +15,5 @@ public interface SystemConfigKeys {
 
     String pairing_allowed_count = "pairing_allowed_count";
 
-    String msisdn_min_length = "pairing_msisdn_min_length";
-
-    String msisdn_max_length = "pairing_msisdn_max_length";
-
-    String pairing_otp_max_valid_retries = "pairing_otp_max_valid_retries";
-
+    String send_pairing_notification_flag = "pairing_send_notification_flag";
 }

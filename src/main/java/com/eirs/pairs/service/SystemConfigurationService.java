@@ -23,5 +23,6 @@ public interface SystemConfigurationService {
 
     Integer getPairingAllowCount();
 
+    Boolean sendPairingNotificationFlag();
 
 }
