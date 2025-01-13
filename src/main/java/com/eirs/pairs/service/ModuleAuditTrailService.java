@@ -49,7 +49,7 @@ public class ModuleAuditTrailService {
                 @Override
                 public ModuleAuditTrail mapRow(ResultSet rs, int rowNum) throws SQLException {
                     ModuleAuditTrail moduleAuditTrail = new ModuleAuditTrail();
-                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getDate("created_on").toInstant()
+                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getTimestamp("created_on").toInstant()
                             , ZoneId.systemDefault()));
                     moduleAuditTrail.setStatusCode(rs.getInt("status_code"));
                     moduleAuditTrail.setFeatureName(rs.getString("feature_name"));
@@ -79,7 +79,7 @@ public class ModuleAuditTrailService {
                 @Override
                 public ModuleAuditTrail mapRow(ResultSet rs, int rowNum) throws SQLException {
                     ModuleAuditTrail moduleAuditTrail = new ModuleAuditTrail();
-                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getDate("created_on").toInstant()
+                    moduleAuditTrail.setCreatedOn(LocalDateTime.ofInstant(rs.getTimestamp("created_on").toInstant()
                             , ZoneId.systemDefault()));
                     moduleAuditTrail.setStatusCode(rs.getInt("status_code"));
                     moduleAuditTrail.setFeatureName(rs.getString("feature_name"));
