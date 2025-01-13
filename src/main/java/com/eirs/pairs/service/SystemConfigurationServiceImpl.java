@@ -40,7 +40,7 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
     Integer pairingAllowedCount;
 
-    Boolean sendDuplicationNotification;
+    Boolean sendNotification;
     Integer msisdnMaxLength;
 
     Integer maxOtpValidRetries;
@@ -203,20 +203,20 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
     @Override
     public Boolean sendPairingNotificationFlag() {
         String key = SystemConfigKeys.send_pairing_notification_flag;
-        if (sendDuplicationNotification == null) {
+        if (sendNotification == null) {
             List<SysParam> values = repository.findByConfigKey(key);
             if (!CollectionUtils.isEmpty(values)) {
                 String value = values.get(0).getConfigValue();
                 if (StringUtils.equalsAnyIgnoreCase(value, "YES", "TRUE"))
-                    sendDuplicationNotification = Boolean.TRUE;
+                    sendNotification = Boolean.TRUE;
                 else
-                    sendDuplicationNotification = Boolean.FALSE;
+                    sendNotification = Boolean.FALSE;
             } else {
                 moduleAlertService.sendConfigurationMissingAlert(key, appConfig.getFeatureName());
                 log.error("Configuration missing in Sys_param table key:{} featureName:{}", key, appConfig.getFeatureName());
                 throw new RuntimeException("Configuration missing in sys_param for key " + key);
             }
         }
-        return sendDuplicationNotification;
+        return sendNotification;
     }
 }
