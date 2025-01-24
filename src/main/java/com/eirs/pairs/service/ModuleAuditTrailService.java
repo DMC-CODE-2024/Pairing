@@ -112,6 +112,7 @@ public class ModuleAuditTrailService {
         String updateAuditQuery = appConfig.getDbType() == DBType.MYSQL ? AuditQueriesConstant.UPDATE_MODULE_AUDIT_TRAIL_MYSQL : AuditQueriesConstant.UPDATE_MODULE_AUDIT_TRAIL_ORACLE;
         updateAuditQuery = updateAuditQuery.replaceAll(AuditQueriesConstant.PARAM_TIME_TAKEN, String.valueOf(moduleAuditTrail.getTimeTaken()))
                 .replaceAll(AuditQueriesConstant.FEATURE_NAME, moduleAuditTrail.getFeatureName())
+                .replaceAll(AuditQueriesConstant.PARAM_STATUS, moduleAuditTrail.getStatusCode() == 200 ? "Success" : "Fail")
                 .replaceAll(AuditQueriesConstant.PARAM_SUCCESS_COUNT, String.valueOf(moduleAuditTrail.getCount()))
                 .replaceAll(AuditQueriesConstant.PARAM_STATUS_CODE, String.valueOf(moduleAuditTrail.getStatusCode()));
         queryExecutorService.execute(updateAuditQuery);
