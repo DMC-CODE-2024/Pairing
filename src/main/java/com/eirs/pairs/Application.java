@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableScheduling
@@ -28,7 +29,13 @@ public class Application {
         log.info("Auto Pairing Mode Processing for date:{}", date);
         context.getBean(RecordDateEdrProcessor.class).processEdr(date);
         context.getBean(AlertServiceImpl.class).emptyAlertQueue();
-        System.exit(0);
-    }
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            System.exit(0);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
+
+    }
 }
