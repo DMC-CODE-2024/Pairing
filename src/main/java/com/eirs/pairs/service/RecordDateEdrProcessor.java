@@ -58,7 +58,7 @@ public class RecordDateEdrProcessor {
 
     @Autowired
     InvalidImeiServiceImpl invalidImeiService;
-    final String MODULE_NAME = "auto_pairing";
+    final String MODULE_NAME = "Auto Pairing";
 
     @PostConstruct
     public void init() {
