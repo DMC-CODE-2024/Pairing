@@ -55,12 +55,16 @@ public class SystemConfigurationServiceImpl implements SystemConfigurationServic
 
     @PostConstruct
     public void init() {
+        try{
         getAllowedDeviceTypes();
         getDefaultLanguage();
         getPairingAllowCount();
         getNotificationSmsEndTime();
         getNotificationSmsStartTime();
         getPairingAllowDays();
+        } catch(Exception e){
+            Runtime.getRuntime().halt(1);
+        }
     }
 
     public Set<String> getAllowedDeviceTypes() throws RuntimeException {
