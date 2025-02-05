@@ -167,7 +167,7 @@ public class NotificationServiceImpl implements NotificationService {
     private String getOperator(String msisdn) {
         String seriesMsisdn = msisdn.substring(0, 5);
         log.info("Going to find Operator for msisdn:{} with series:{}", msisdn, seriesMsisdn);
-        Optional<OperatorSeries> operator = operatorSeriesRepository.findAllWithCreationDateTimeBefore(Integer.parseInt(seriesMsisdn));
+        Optional<OperatorSeries> operator = operatorSeriesRepository.findBySeries(Integer.parseInt(seriesMsisdn));
         if (operator.isPresent()) {
             log.info("Found Operator:{} for msisdn:{} with series:{}", operator.get(), msisdn, seriesMsisdn);
             return operator.get().getOperatorName();
